@@ -1,0 +1,12 @@
+//ICKDSF   JOB ,,CLASS=A,MSGCLASS=A
+//*
+//*        INITIALIZE DASD VOLUME
+//*        ======================
+//*        DOESN'T SUPPORT 3390 DISK
+//*
+//ICKDSF   EXEC PGM=ICKDSF
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+  INIT UNIT(184) NOVERIFY VOLID(XXXXXX) VTOC(0,1,29)
+//
+//

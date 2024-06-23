@@ -1,0 +1,67 @@
+//SORT     JOB ,,CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1),REGION=8192K
+//*********************************************************************
+//*        Sample JCL for SORT
+//*        ===================
+//*********************************************************************
+//*********************************************************************
+//*        SORT EXEC JCL FOR IBM SYSTEM
+//*
+//*        SYSIN CONTROL CARD
+//*          SORT  FIELDS=(X,Y,FM,Z)
+//*            |           | | |  |
+//*            |           | | |  SORT PATTERN A;ASCEND
+//*            |           | | |               D;DESCEND
+//*            |           | | KEY TYPE CH;CHR
+//*            |           | |          BI;BIN
+//*            |           | |          ZD;ZONE
+//*            |           | |          PD;PACK
+//*            |           | KEY LNG(BYTE)
+//*            |           KEY START POINT
+//*            SORT;MERGE
+//*          RECORD TYPE=F|V,LENGTH=value
+//*
+//*        SORTWKnn DATASET MUST BE PLACED ON 2314 DISK ONLY.
+//*        OTHERWISE, IER042A - UNITS ASGN ERROR.
+//*        SORT/MERGE UTILITY INSTALLED FROM OS/360 MVT SYSTEM.
+//*********************************************************************
+//SORT     EXEC PGM=SORT,PARM='MSG=AP'
+//SORTLIB  DD DSN=SYS1.SORTLIB,DISP=SHR
+//SYSOUT   DD SYSOUT=*
+//SORTWK01 DD UNIT=SORT,SPACE=(CYL,10),VOL=SER=SORT01
+//SORTWK02 DD UNIT=SORT,SPACE=(CYL,10),VOL=SER=SORT02
+//SORTWK03 DD UNIT=SORT,SPACE=(CYL,10),VOL=SER=SORT03
+//SORTWK04 DD UNIT=SORT,SPACE=(CYL,10),VOL=SER=SORT04
+//SORTWK05 DD UNIT=SORT,SPACE=(CYL,10),VOL=SER=SORT05
+//SORTWK06 DD UNIT=SORT,SPACE=(CYL,10),VOL=SER=SORT06
+//SORTIN   DD DISP=SHR,DSN=USR1.PARMLIB(SORTDATA)
+//SORTOUT  DD SYSOUT=*,DCB=(RECFM=FB,BLKSIZE=4000,LRECL=80)
+//SYSIN    DD *
+  SORT  FIELDS=(40,10,CH,A)
+  RECORD TYPE=F,LENGTH=80
+  END
+//*
+//MERGE    EXEC PGM=SORT,PARM='MSG=AP'
+//SORTLIB  DD DSN=SYS1.SORTLIB,DISP=SHR
+//SYSOUT   DD SYSOUT=*
+//SORTWK01 DD UNIT=SORT,SPACE=(CYL,10),VOL=SER=SORT01
+//SORTWK02 DD UNIT=SORT,SPACE=(CYL,10),VOL=SER=SORT02
+//SORTWK03 DD UNIT=SORT,SPACE=(CYL,10),VOL=SER=SORT03
+//SORTWK04 DD UNIT=SORT,SPACE=(CYL,10),VOL=SER=SORT04
+//SORTWK05 DD UNIT=SORT,SPACE=(CYL,10),VOL=SER=SORT05
+//SORTWK06 DD UNIT=SORT,SPACE=(CYL,10),VOL=SER=SORT06
+//SORTIN01 DD *
+01010101 SORTIN01 LINE01 ***********************************
+11111111 SORTIN01 LINE02 ***********************************
+//SORTIN02 DD *
+02020202 SORTIN02 LINE01 ***********************************
+22222222 SORTIN02 LINE02 ***********************************
+//SORTIN03 DD *
+03030303 SORTIN03 LINE01 ***********************************
+33333333 SORTIN03 LINE02 ***********************************
+//SORTOUT  DD SYSOUT=*,DCB=(RECFM=FB,BLKSIZE=4000,LRECL=80)
+//SYSIN    DD *
+  MERGE FIELDS=(1,8,CH,A)
+  RECORD TYPE=F,LENGTH=80
+  END
+//
+//

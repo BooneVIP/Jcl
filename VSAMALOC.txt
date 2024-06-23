@@ -1,0 +1,17 @@
+//IDCAMS   JOB ,,CLASS=A,MSGCLASS=A,REGION=4096K
+//*********************************************************************
+//*        Sample JCL for IDCAMS
+//*        =====================
+//*********************************************************************
+//VSAMALOC EXEC PGM=IDCAMS
+//STEPCAT  DD DISP=SHR,DSN=SYS1.USERCAT
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+ DEFINE CLUSTER -
+        (NAME(XXXX.VSAMFILE) -
+         NONINDEXED RECORDSIZE(80 80)) -
+        DATA -
+        (NAME(XXXX.VSAMFILE.DATA) -
+         CYL(10 0) VOLUME(USER80) UNIQUE)
+//
+//

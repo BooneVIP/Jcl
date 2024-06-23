@@ -1,0 +1,21 @@
+//SMFUNLD  JOB (ACCOUNT),PGMR,CLASS=A,MSGCLASS=A,REGION=2048K
+//*********************************************************************
+//*        Sample JCL for IFASMFDP
+//*        =======================
+//*********************************************************************
+//IEFBR14  EXEC PGM=IEFBR14
+//DUMPOUT  DD DISP=(OLD,DELETE),DSN=WORK.SMFDATA,
+//            UNIT=SYSDA,VOL=SER=WORK82
+//*
+//*        UNLOAD SMF DATASET
+//*
+//IFASMFDP EXEC PGM=IFASMFDP
+//SYSPRINT DD SYSOUT=*
+//DUMPIN   DD DSN=SYS1.MANY,DISP=SHR
+//DUMPOUT  DD DISP=(,KEEP),DSN=WORK.SMFDATA,
+//            UNIT=SYSDA,VOL=SER=WORK82,SPACE=(CYL,(10,10),RLSE)
+//SYSIN    DD *
+  INDD(DUMPIN,OPTIONS(DUMP))
+  OUTDD(DUMPOUT,TYPE(0:255))
+//
+//

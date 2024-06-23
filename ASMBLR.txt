@@ -1,0 +1,44 @@
+//ASMBLR   JOB ,'TEST ASSEMBLER',CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1)
+//*********************************************************************
+//*        BUILD LOAD MODULE(ASSEMBLER) AND EXECUTE IT
+//*        ===========================================
+//*********************************************************************
+//ASMCLG   PROC
+//ASM      EXEC PGM=IFOX00,REGION=4096K,
+//         PARM='OBJ,NODECK,XREF(SHORT),TERM,RLD'
+//SYSPRINT DD SYSOUT=*
+//SYSTERM  DD SYSOUT=*
+//SYSLIB   DD DISP=SHR,DSN=SYS1.MACLIB
+//         DD DISP=SHR,DSN=SYS1.AMODGEN
+//SYSUT1   DD UNIT=SYSDA,SPACE=(TRK,(50,20))
+//SYSUT2   DD UNIT=SYSDA,SPACE=(TRK,(50,20))
+//SYSUT3   DD UNIT=SYSDA,SPACE=(TRK,(50,20))
+//SYSGO    DD DISP=(MOD,PASS),UNIT=SYSDA,SPACE=(80,(500,100))
+//LKED     EXEC PGM=IEWL,REGION=2048K,
+//         PARM='LIST,LET,MAP,XREF'
+//SYSPRINT DD SYSOUT=*
+//SYSLIN   DD DISP=(OLD,DELETE),DSNAME=*.ASM.SYSGO
+//         DD DDNAME=SYSIN
+//SYSLMOD  DD DISP=(,PASS),DSNAME=&GODATA(RUN),
+//            UNIT=SYSDA,SPACE=(1024,(50,20,1))
+//SYSUT1   DD UNIT=(SYSDA,SEP=(SYSLIN,SYSLMOD)),SPACE=(1024,(50,20))
+//GO       EXEC PGM=*.LKED.SYSLMOD,COND=((5,LT,ASM),(5,LT,LKED))
+//SYSPRINT DD SYSOUT=*
+//         PEND
+//********************************************************************
+//*        NAME: USR1.JCL(ASMBLR)
+//*        DESC: ASSEMBLER VERIFICATION
+//********************************************************************
+//ASMBLR   EXEC ASMCLG
+//ASM.SYSIN DD *
+HELOWRLD CSECT ,
+         USING *,12                     DEFINE OUR BASE REGISTER
+         STM   14,12,12(13)             SAVE CALLER GPRS VALUE
+         LR    12,15                    LOAD ENTRY TO OUR BASE REG
+         WTO   'HELLO, WORLD'           SHOW 'HELLO, WORLD' MESSAGE
+         L     14,12(,13)               LOAD RETURN ADDRESS
+         LM    0,12,20(13)              LOAD CALLER GPRS VALUE
+         BR    14                       RETURN TO CALLER WITH WTO RETCD
+         END
+//
+//

@@ -1,0 +1,38 @@
+//PL1      JOB ,'TEST PL/I',CLASS=A,MSGCLASS=A,MSGLEVEL=(1,1)
+//*********************************************************************
+//*        BUILD LOAD MODULE(PL/I) AND EXECUTE IT
+//*        ======================================
+//*********************************************************************
+//PL1CLG   PROC
+//PL1      EXEC PGM=IEMAA,REGION=4096K,
+//         PARM='LOAD,NODECK'
+//SYSPRINT DD SYSOUT=*
+//SYSUT3   DD DSNAME=&&SYSUT3,UNIT=SYSDA,SPACE=(80,(250,250)),
+//            DCB=BLKSIZE=80
+//SYSUT1   DD DSNAME=&&SYSUT1,UNIT=SYSDA,SPACE=(1024,(60,60),,CONTIG),
+//            SEP=(SYSUT3,SYSLIN),DCB=BLKSIZE=1024
+//SYSLIN   DD DISP=(MOD,PASS),UNIT=SYSDA,SPACE=(80,(250,100))
+//LKED     EXEC PGM=IEWL,REGION=2048K,
+//         PARM='LIST,LET,MAP,XREF'
+//SYSPRINT DD SYSOUT=*
+//SYSLIN   DD DISP=(OLD,DELETE),DSNAME=*.PL1.SYSLIN
+//         DD DDNAME=SYSIN
+//SYSLMOD  DD DISP=(,PASS),DSNAME=&GODATA(RUN),
+//            UNIT=SYSDA,SPACE=(1024,(50,20,1))
+//SYSLIB   DD DISP=SHR,DSNAME=SYS1.PL1LIB
+//SYSUT1   DD UNIT=(SYSDA,SEP=(SYSLIN,SYSLMOD)),SPACE=(1024,(50,20))
+//GO       EXEC PGM=*.LKED.SYSLMOD,COND=((5,LT,PL1),(5,LT,LKED))
+//STEPLIB  DD DISP=SHR,DSNAME=SYS1.PL1LIB
+//SYSPRINT DD SYSOUT=*
+//         PEND
+//********************************************************************
+//*        NAME: USR1.JCL(PL1)
+//*        DESC: PL/I VERIFICATION
+//********************************************************************
+//PL1      EXEC PL1CLG
+//PL1.SYSIN DD *
+ HELLO: PROC OPTIONS(MAIN);
+ PUT SKIP LIST('HELLO, WORLD');
+ END HELLO;
+//
+//

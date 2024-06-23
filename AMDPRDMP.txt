@@ -1,0 +1,28 @@
+//AMDPRDMP JOB (ACCOUNT),PGMR,CLASS=A,MSGCLASS=A,REGION=4096K
+//*********************************************************************
+//*        Sample JCL for AMDPRDMP
+//*        =======================
+//*********************************************************************
+//AMDPRDMP EXEC PGM=AMDPRDMP
+//SYSPRINT DD SYSOUT=*
+//PRINTER  DD SYSOUT=*
+//TRACE    DD DISP=SHR,DSN=SYS1.TRACE
+//SYSUT1   DD UNIT=SYSDA,SPACE=(CYL,(10,10))
+//SYSIN    DD *
+ EDIT DDNAME=TRACE,JOBNAME=(IBMUSER)
+ EDIT DDNAME=TRACE,SVC=(48,56)
+ END
+//
+//
+ EDIT DDNAME=TRACE,RNIO,USR=ALL
+ END
+//
+//
+//INITDUMP EXEC PGM=AMDPRDMP
+//SYSPRINT DD DUMMY
+//PRINTER  DD DUMMY
+//TAPE     DD DISP=OLD,DSNAME=SYS1.DUMP00
+//SYSUT2   DD DUMMY
+//SYSIN    DD DUMMY
+//
+//

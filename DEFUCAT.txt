@@ -1,0 +1,14 @@
+//IDCAMS   JOB ,,CLASS=A,MSGCLASS=A,REGION=4096K
+//*
+//*        CREATE NEW USER CATALOG
+//*
+//USERCAT  EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+ DEFINE UCAT(NAME(SYS1.XXXXCAT)      -
+             VOL (USER80)            -
+             CYL (10)                -
+             BUFSP(8192) NRVBL)
+ LISTCAT USERCATALOG ALL
+//
+//
